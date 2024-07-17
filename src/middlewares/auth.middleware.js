@@ -6,39 +6,21 @@ const AuthModel = require("../db/models/usersModel");
 
 // Middleware to verify wallet address for each API call
 const verifyWallet = (req, res, next) => {
-  const walletAddress = req.headers['x-wallet-address'];
-  const nonce = req.headers['x-nonce'];
-  const signature = req.headers['x-signature'];
+  const token = req.headers['authorization'];
 
-  if (!walletAddress || !nonce || !signature) {
-    return res.status(400).send({ message: 'Missing authentication headers' });
-    
+  if (!token) {
+    return res.status(403).json({ error: 'No token provided' });
   }
 
-  try {
-    const message = `Sign this message to authenticate with our service. Nonce: ${nonce}`;
-    const encodedMessage = new TextEncoder().encode(message);
-    const decodedSignature = bs58.decode(signature);
-    const decodedPublicKey = new PublicKey(walletAddress).toBytes();
-
-    const isValid = nacl.sign.detached.verify(
-      encodedMessage,
-      decodedSignature,
-      decodedPublicKey
-    );
-
-    if (isValid) {
-      next()
-    } else {
-      res.status(401).json({
-        authenticated: false,
-        message: "Authentication failed"
-      });
+  jwt.verify(token.split(' ')[1], SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to authenticate token' });
     }
-  } catch (error) {
-    console.error('Error verifying signature:', error);
-    res.failServerError(error?.message)
-  }
+
+    req.user = decoded;
+    next();
+  });
+
 };
 
 module.exports = { verifyWallet }
