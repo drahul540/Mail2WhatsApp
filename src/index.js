@@ -3,13 +3,15 @@ const express = require('express');
 const cors = require("cors");
 const responseTime = require('response-time')
 const moment = require('moment-timezone')
-const responseHelper = require('express-response-helper').helper();
+
+const cron = require('node-cron');
+const {authorize} = require('./utils/gmail/auth');
+const {watchGmail} = require('./utils/gmail/watch');
 
 moment.tz.setDefault('UTC');
 
 // express setup
 const app = express()
-app.use(responseHelper);
 app.use(express.json())
 app.use(responseTime());
 
@@ -20,36 +22,24 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-
-
-// app.use((req, res, next) => {
-   
-//     const origin = req.headers.origin;
-//     console.log("ORIGIN: ",origin);
-//     var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-//     console.log(fullUrl);
-//   if (allowedDomains.includes(origin)) {
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//     next();
-//   } else {
-//     res.status(403).json({ error: 'Unauthorized domain' });
-//   }
-// });
-
-
+// Routes
 app.get('/', (req, res)=>{
     res.send("Server Running...)");
 })
 
+app.use('/gmail', require('./routes/gmail.route'))
 
 
-app.use('/auth', require('./routes/auth.route'))
-app.use('/users', require('./routes/user.route'))
-
-
-
-
+// Start the server
 const PORT = process.env.PORT || 8000;
-app.listen( PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-})
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    authorize(() => {
+        watchGmail();
+        // Schedule the watch renewal every 6 days
+        cron.schedule('0 0 */6 * *', () => {
+            console.log('Renewing Gmail watch...');
+            authorize(watchGmail);
+        });
+    });
+});
