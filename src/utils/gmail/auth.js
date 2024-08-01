@@ -13,7 +13,7 @@ function authorize(callback) {
             getNewToken(oAuth2Client, callback);
         } else {
             oAuth2Client.setCredentials(JSON.parse(token));
-            callback();
+            callback(oAuth2Client);
         }
     });
 }
@@ -37,7 +37,7 @@ function getNewToken(oAuth2Client, callback) {
                 if (err) console.error(err);
                 console.log('Token stored to', TOKEN_PATH);
             });
-            callback();
+            callback(oAuth2Client);
         });
     });
 }

@@ -2,8 +2,8 @@ const {google} = require('googleapis');
 const {oAuth2Client} = require('./auth');
 const {TOPIC_NAME} = require('../../config/config');
 
-function watchGmail() {
-    const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
+function watchGmail(auth) {
+    const gmail = google.gmail({version: 'v1', auth: auth});
     const userId = 'me';
     const request = {
         userId: userId,
