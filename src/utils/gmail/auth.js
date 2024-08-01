@@ -50,7 +50,6 @@ function setCredentials(code) {
             if (err) console.error(err);
             console.log('Token stored to', TOKEN_PATH);
         });
-        callback();
     });
 }
 
