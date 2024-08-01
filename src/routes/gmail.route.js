@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const {getEmailDetails} = require('../utils/gmail/email');
+const {getEmailDetails, getEmailDetailsWOCallback} = require('../utils/gmail/email');
 const { setCredentials } = require('../utils/gmail/auth');
 
 route.post('/webhook', (req, res) => {
@@ -28,5 +28,13 @@ route.get('/oauth2callback', async (req, res) => {
     res.send('Authentication successful! You can close this window.');
 });
 
+route.get('/email/content', async (req, res) => {
+    const { id } = req.query;
+    getEmailDetailsWOCallback(id, (emailDetails) => {
+        console.log('Email details:', emailDetails);
+        // Process the email details here (e.g., send to WhatsApp)
+    });
+    res.send('Authentication successful! You can close this window.');
+});
 
 module.exports = route

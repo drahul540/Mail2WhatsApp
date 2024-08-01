@@ -15,4 +15,17 @@ function getEmailDetails(messageId, callback) {
     
 }
 
-module.exports = { getEmailDetails };
+function getEmailDetailsWOCallback(messageId) {
+    const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
+    gmail.users.history.list((err, resp)=>{
+        gmail.users.messages.get({
+            userId: 'me',
+            id: messageId
+        }, (err, res) => {
+            if (err) return console.error('Error getting email details:', err);
+        });
+    })
+    
+}
+
+module.exports = { getEmailDetails, getEmailDetailsWOCallback };
