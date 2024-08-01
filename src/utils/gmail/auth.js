@@ -42,7 +42,7 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-function setCredentials(tokens) {
+function setCredentials(code) {
     oAuth2Client.getToken(code, (err, token) => {
         if (err) return console.error('Error retrieving access token', err);
         oAuth2Client.setCredentials(token);
