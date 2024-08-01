@@ -2,6 +2,7 @@ const {OAuth2Client} = require('google-auth-library');
 const fs = require('fs');
 const readline = require('readline');
 const {CLIENT_ID, CLIENT_SECRET, REDIRECT_URI} = require('../../config/config');
+const { watchGmail } = require('./watch');
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 const TOKEN_PATH = 'token.json';
@@ -24,22 +25,24 @@ function getNewToken(oAuth2Client, callback) {
         scope: SCOPES,
     });
     console.log('Authorize this app by visiting this url:', authUrl);
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-    rl.question('Enter the code from that page here: ', (code) => {
-        rl.close();
-        oAuth2Client.getToken(code, (err, token) => {
-            if (err) return console.error('Error retrieving access token', err);
-            oAuth2Client.setCredentials(token);
-            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                if (err) console.error(err);
-                console.log('Token stored to', TOKEN_PATH);
-            });
-            callback(oAuth2Client);
-        });
-    });
+
+    callback(false)
+    // const rl = readline.createInterface({
+    //     input: process.stdin,
+    //     output: process.stdout,
+    // });
+    // rl.question('Enter the code from that page here: ', (code) => {
+    //     rl.close();
+    //     oAuth2Client.getToken(code, (err, token) => {
+    //         if (err) return console.error('Error retrieving access token', err);
+    //         oAuth2Client.setCredentials(token);
+    //         fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+    //             if (err) console.error(err);
+    //             console.log('Token stored to', TOKEN_PATH);
+    //         });
+    //         callback(oAuth2Client);
+    //     });
+    // });
 }
 
 function setCredentials(code) {
@@ -49,6 +52,7 @@ function setCredentials(code) {
         fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
             if (err) console.error(err);
             console.log('Token stored to', TOKEN_PATH);
+            watchGmail(oAuth2Client)
         });
     });
 }
