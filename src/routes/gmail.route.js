@@ -21,7 +21,7 @@ route.post('/webhook', (req, res) => {
     res.status(200).send({status: 'success'});
 });
 
-app.get('/oauth2callback', async (req, res) => {
+route.get('/oauth2callback', async (req, res) => {
     const { code } = req.query;
     const { tokens } = await OAuth2Client.getToken(code);
     setCredentials(tokens);
