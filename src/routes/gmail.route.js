@@ -7,9 +7,10 @@ route.post('/webhook', (req, res) => {
     console.log('Received notification:', data);
 
     if (data.message && data.message.data) {
-        // const message = Buffer.from(data.message.data, 'base64').toString('utf-8');
-        // const messageData = JSON.parse(message);
-        // const messageId = messageData.email;
+        const message = Buffer.from(data.message.data, 'base64').toString('utf-8');
+        const messageData = JSON.parse(message);
+        console.log('MSGDATA: ',messageData)
+        const messageId = messageData.email;
 
         getEmailDetails(data.message.messageId, (emailDetails) => {
             console.log('Email details:', emailDetails);
