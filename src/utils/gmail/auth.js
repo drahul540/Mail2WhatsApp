@@ -43,7 +43,15 @@ function getNewToken(oAuth2Client, callback) {
 }
 
 function setCredentials(tokens) {
-    oAuth2Client.setCredentials(tokens);
+    oAuth2Client.getToken(code, (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+        oAuth2Client.setCredentials(token);
+        fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+            if (err) console.error(err);
+            console.log('Token stored to', TOKEN_PATH);
+        });
+        callback();
+    });
 }
 
 module.exports = { oAuth2Client, authorize, setCredentials };
