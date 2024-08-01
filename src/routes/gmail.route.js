@@ -1,5 +1,7 @@
 const route = require('express').Router();
+const {OAuth2Client} = require('google-auth-library');
 const {getEmailDetails} = require('../utils/gmail/email');
+const { setCredentials } = require('../utils/gmail/auth');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
@@ -17,6 +19,13 @@ route.post('/webhook', (req, res) => {
     }
 
     res.status(200).send({status: 'success'});
+});
+
+app.get('/oauth2callback', async (req, res) => {
+    const { code } = req.query;
+    const { tokens } = await OAuth2Client.getToken(code);
+    setCredentials(tokens);
+    res.send('Authentication successful! You can close this window.');
 });
 
 

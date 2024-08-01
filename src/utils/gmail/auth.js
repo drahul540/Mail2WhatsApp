@@ -42,4 +42,8 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-module.exports = { oAuth2Client, authorize };
+function setCredentials(tokens) {
+    oAuth2Client.setCredentials(tokens);
+}
+
+module.exports = { oAuth2Client, authorize, setCredentials };
