@@ -39,6 +39,7 @@ route.get('/email/content', async (req, res) => {
     const { id } = req.query;
     getEmailDetailsWOCallback(id, (emailDetails) => {
         console.log('Email details:', emailDetails);
+        res.send(emailDetails);
         // Process the email details here (e.g., send to WhatsApp)
     });
     res.send('Authentication successful! You can close this window.');

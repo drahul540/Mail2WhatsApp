@@ -25,14 +25,18 @@ function getMessageList(callback){
     })
 }
 
-function getEmailDetailsWOCallback(messageId) {
+function getEmailDetailsWOCallback(messageId, callback) {
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
     gmail.users.history.list((err, resp)=>{
         gmail.users.messages.get({
             userId: 'me',
-            id: messageId
+            id: messageId,
+            requestBody: {
+                format: minimal
+            }
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
+            callback(res.data)
         });
     })
     
