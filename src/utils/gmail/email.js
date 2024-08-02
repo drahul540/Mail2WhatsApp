@@ -1,5 +1,6 @@
 const {google} = require('googleapis');
 const {oAuth2Client} = require('./auth');
+const { simpleParser } = require('mailparser');
 
 function getEmailDetails(messageId, callback) {
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
