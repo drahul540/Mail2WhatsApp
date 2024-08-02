@@ -26,28 +26,28 @@ function getMessageList(callback){
 }
 
 function base64UrlDecode(base64Url) {
-    // Replace URL-safe characters with standard Base64 characters
     base64Url = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    
-    // Pad with '=' characters to make the length a multiple of 4
     while (base64Url.length % 4) {
         base64Url += '=';
     }
-    
-    // Decode the Base64 string
     const decodedString = Buffer.from(base64Url, 'base64').toString('utf8');
-    
     return decodedString;
 }
 
-function decodeBase64Url(base64url) {
-    
-    const base64 = base64url
-      .replace(/-/g, '+')
-      .replace(/_/g, '/')
-  
-    return Buffer.from(base64, 'base64')
-  }
+function decodeAndParseEmail(raw, callback) {
+    try {
+        const decodedString = base64UrlDecode(raw);
+        simpleParser(decodedString, (err, parsedEmail) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, parsedEmail);
+        });
+    } catch (error) {
+        callback(error);
+    }
+}
+
 
 function getEmailDetailsWOCallback(messageId, callback) {
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
@@ -58,8 +58,12 @@ function getEmailDetailsWOCallback(messageId, callback) {
             format: 'raw'
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
-            const decoded = decodeBase64Url(res.data);
-            callback(decoded)
+            decodeAndParseEmail(res.data.raw, (error, emailData) => {
+                if (error) {
+                    return callback(error);
+                }
+                callback(emailData);
+            });
         });
     })
     
