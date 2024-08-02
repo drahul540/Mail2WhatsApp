@@ -10,11 +10,11 @@ route.post('/webhook', (req, res) => {
         const message = Buffer.from(data.message.data, 'base64').toString('utf-8');
         const messageData = JSON.parse(message);
         console.log('Decoded: ', messageData);
-        const messageId = messageData.emailAddress;
+        const historyId = messageData.historyId;
 
         console.log('MSGDATA: ',messageId)
 
-        getEmailDetails(messageId, (emailDetails) => {
+        getEmailDetails(historyId, (emailDetails) => {
             console.log('Email details:', emailDetails);
             // Process the email details here (e.g., send to WhatsApp)
         });

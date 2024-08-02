@@ -2,17 +2,18 @@ const {google} = require('googleapis');
 const {oAuth2Client} = require('./auth');
 const { simpleParser } = require('mailparser');
 
-function getEmailDetails(messageId, callback) {
+function getEmailDetails(historyId, callback) {
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
-    gmail.users.history.list((err, resp)=>{
-        gmail.users.messages.get({
-            userId: 'me',
-            id: messageId
-        }, (err, res) => {
-            if (err) return console.error('Error getting email details:', err);
-            console.log('RESData: ',res.data)
-            callback(res.data);
-        });
+    gmail.users.history.list({userId: 'me', startHistoryId: historyId},(err, resp)=>{
+        console.log('RESData: ',resp.data)
+        // gmail.users.messages.get({
+        //     userId: 'me',
+        //     id: messageId
+        // }, (err, res) => {
+        //     if (err) return console.error('Error getting email details:', err);
+        //     console.log('RESData: ',res.data)
+        //     callback(res.data);
+        // });
     })
     
 }
