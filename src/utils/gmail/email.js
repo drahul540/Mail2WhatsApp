@@ -32,7 +32,7 @@ function getEmailDetailsWOCallback(messageId, callback) {
             userId: 'me',
             id: messageId,
             requestBody: {
-                format: minimal
+                format: 'minimal'
             }
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
