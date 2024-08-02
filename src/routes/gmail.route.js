@@ -9,10 +9,9 @@ route.post('/webhook', (req, res) => {
     if (data.message && data.message.data) {
         const message = Buffer.from(data.message.data, 'base64').toString('utf-8');
         const messageData = JSON.parse(message);
-        console.log('Decoded: ', messageData);
         const historyId = messageData.historyId;
 
-        console.log('MSGDATA: ',messageId)
+        console.log('historyId: ',historyId)
 
         getEmailDetails(historyId, (emailDetails) => {
             console.log('Email details:', emailDetails);
