@@ -31,7 +31,7 @@ function getEmailDetailsWOCallback(messageId, callback) {
         gmail.users.messages.get({
             userId: 'me',
             id: messageId,
-            format: 'minimal'
+            format: 'raw'
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
             callback(res.data)
