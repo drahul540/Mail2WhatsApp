@@ -20,7 +20,7 @@ function getEmailDetails(historyId, callback) {
 
 function getMessageList(callback){
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
-    gmail.users.messages.list({userId: 'me'}, (err, res)=>{
+    gmail.users.messages.list({userId: 'me', labelIds:['INBOX'], maxResults: 1}, (err, res)=>{
         if (err) return console.error('Error getting message list:', err);
             console.log('RESData: ',res.data)
             callback(res.data);
