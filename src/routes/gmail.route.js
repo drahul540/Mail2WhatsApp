@@ -38,7 +38,7 @@ route.get('/message/list', (req, res) => {
 route.get('/email/content', async (req, res) => {
     const { id } = req.query;
     getEmailDetailsWOCallback(id, (emailDetails) => {
-        const message = Buffer.from(emailDetails, 'base64').toString('utf-8');
+        const message = Buffer.from(emailDetails, 'base64');
         console.log('Email details:', message);
         res.send(message);
         // Process the email details here (e.g., send to WhatsApp)
