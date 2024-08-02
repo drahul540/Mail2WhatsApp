@@ -40,6 +40,15 @@ function base64UrlDecode(base64Url) {
     return decodedString;
 }
 
+function decodeBase64Url(base64url) {
+    
+    const base64 = base64url
+      .replace(/-/g, '+')
+      .replace(/_/g, '/')
+  
+    return Buffer.from(base64, 'base64')
+  }
+
 function getEmailDetailsWOCallback(messageId, callback) {
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
     gmail.users.history.list((err, resp)=>{
@@ -49,7 +58,8 @@ function getEmailDetailsWOCallback(messageId, callback) {
             format: 'raw'
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
-            callback(base64UrlDecode(res.data))
+            const decoded = decodeBase64Url(res.data);
+            callback(decoded)
         });
     })
     
