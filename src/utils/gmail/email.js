@@ -9,6 +9,7 @@ function getEmailDetails(messageId, callback) {
             id: messageId
         }, (err, res) => {
             if (err) return console.error('Error getting email details:', err);
+            console.log('RESData: ',res.data)
             callback(res.data);
         });
     })
