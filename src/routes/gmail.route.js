@@ -37,6 +37,7 @@ route.get('/stop-watch', (req, res) => {
         userId: 'me',
       }, (err, response) => {
         if (err) return res.status(500).send(err);
+        console.log(response)
         res.send('Watch stopped');
       });
     });

@@ -35,9 +35,9 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     authorize((auth) => {
-        if(auth){
-            watchGmail(auth);
-        }
+        // if(auth){
+        //     watchGmail(auth);
+        // }
         
         // Schedule the watch renewal every 6 days
         cron.schedule('0 0 */6 * *', () => {
