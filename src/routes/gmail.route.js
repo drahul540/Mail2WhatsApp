@@ -28,7 +28,7 @@ route.get('/start-watch', async (req, res) => {
     })
 });
 
-app.get('/stop-watch', (req, res) => {
+route.get('/stop-watch', (req, res) => {
     authorize((auth) => {
       const gmail = google.gmail({ version: 'v1', auth });
       
