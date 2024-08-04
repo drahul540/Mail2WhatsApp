@@ -3,6 +3,7 @@ const {getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/emai
 const { setCredentials, authorize } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
 const { start, stop, watchGmail } = require('../utils/gmail/watch');
+const { google } = require('googleapis');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
