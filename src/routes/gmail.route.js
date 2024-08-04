@@ -2,7 +2,7 @@ const route = require('express').Router();
 const {getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
 const { setCredentials, authorize } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
-const { start, stop, watchGmail } = require('../utils/gmail/watch');
+const { stopWatch, watchGmail } = require('../utils/gmail/watch');
 const { google } = require('googleapis');
 const cron = require('node-cron');
 
@@ -36,18 +36,8 @@ route.get('/start-watch', async (req, res) => {
 });
 
 route.get('/stop-watch', (req, res) => {
-    authorize((auth) => {
-      const gmail = google.gmail({ version: 'v1', auth });
-      
-      gmail.users.stop({
-        userId: 'me',
-      }, (err, response) => {
-        if (err) return res.status(500).send(err);
-        console.log(response)
-        res.send('Watch stopped');
-      });
-    });
-  });
+    authorize(stopWatch);
+});
 
 route.get('/oauth2callback', async (req, res) => {
     const { code } = req.query;

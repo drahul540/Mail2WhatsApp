@@ -19,21 +19,22 @@ function watchGmail(auth) {
     });
 }
 
-function start(){
-    authorize((auth)=>{
-        watchGmail(auth);
-    })
-    
+function stopWatch(auth) {
+    const gmail = google.gmail({ version: 'v1', auth });
+    gmail.users.stop({
+        userId: 'me',
+    }, (err, response) => {
+        if (err) {
+            if (err.response) {
+                console.error('Error stopping Gmail watch:', err.response.data);
+            } else {
+                console.error('Error stopping Gmail watch:', err.message);
+            }
+        } else {
+            console.log('Gmail watch stopped:', response.data);
+        }
+    });
 }
 
-function stop(){
-    authorize((auth)=>{
-        const gmail = google.gmail({version: 'v1', auth: auth});
-        const userId = 'me';
 
-        gmail.users.stop({userId});
-    })
-    
-}
-
-module.exports = { watchGmail, start, stop };
+module.exports = { watchGmail, stopWatch };
