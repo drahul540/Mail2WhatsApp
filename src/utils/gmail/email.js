@@ -2,19 +2,42 @@ const {google} = require('googleapis');
 const {oAuth2Client} = require('./auth');
 const { simpleParser } = require('mailparser');
 
-function getEmailDetails(historyId, callback) {
+// function getEmailDetails(historyId, callback) {
+//     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
+//     // gmail.users.history.list({userId: 'me', startHistoryId: historyId},(err, resp)=>{
+//     //     console.log('RESData: ',resp.data)
+//     //     // gmail.users.messages.get({
+//     //     //     userId: 'me',
+//     //     //     id: messageId
+//     //     // }, (err, res) => {
+//     //     //     if (err) return console.error('Error getting email details:', err);
+//     //     //     console.log('RESData: ',res.data)
+//     //     //     callback(res.data);
+//     //     // });
+//     // })
+//     getMessageList((data)=>{
+//         gmail.users.messages.get({
+//             userId: 'me',
+//             id: data.messages[0].id,
+//             format: 'raw'
+//         }, (err, res) => {
+//             if (err) return console.error('Error getting email details:', err);
+//             decodeAndParseEmail(res.data.raw, (error, emailData) => {
+//                 if (error) {
+//                     return callback(error);
+//                 }
+//                 delete emailData.headerLines;
+//                 delete emailData.headers;
+//                 delete emailData.attachments;
+//                 callback(emailData);
+//             });
+//         });
+//     })
+    
+// }
+
+function getLatestMessage(callback){
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
-    // gmail.users.history.list({userId: 'me', startHistoryId: historyId},(err, resp)=>{
-    //     console.log('RESData: ',resp.data)
-    //     // gmail.users.messages.get({
-    //     //     userId: 'me',
-    //     //     id: messageId
-    //     // }, (err, res) => {
-    //     //     if (err) return console.error('Error getting email details:', err);
-    //     //     console.log('RESData: ',res.data)
-    //     //     callback(res.data);
-    //     // });
-    // })
     getMessageList((data)=>{
         gmail.users.messages.get({
             userId: 'me',
@@ -26,11 +49,13 @@ function getEmailDetails(historyId, callback) {
                 if (error) {
                     return callback(error);
                 }
-                callback(emailData.subject);
+                delete emailData.headerLines;
+                delete emailData.headers;
+                delete emailData.attachments;
+                callback({metadata: emailData, messageId: data.messages[0].id});
             });
         });
     })
-    
 }
 
 function getMessageList(callback){
@@ -86,4 +111,4 @@ function getEmailDetailsWOCallback(messageId, callback) {
     
 }
 
-module.exports = { getEmailDetails, getEmailDetailsWOCallback, getMessageList };
+module.exports = { getLatestMessage, getEmailDetails, getEmailDetailsWOCallback, getMessageList };

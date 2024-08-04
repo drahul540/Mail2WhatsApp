@@ -1,11 +1,11 @@
 const route = require('express').Router();
 const {getEmailDetails, getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
 const { setCredentials } = require('../utils/gmail/auth');
+const gmailController = require('../controller/gmail.controller');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
-    console.log('Received notification:', data);
-
+    // console.log('Received notification:', data);
     if (data.message && data.message.data) {
         const message = Buffer.from(data.message.data, 'base64').toString('utf-8');
         const messageData = JSON.parse(message);
@@ -13,13 +13,9 @@ route.post('/webhook', (req, res) => {
 
         console.log('historyId: ',historyId)
 
-        getEmailDetails(historyId, (emailDetails) => {
-            console.log('Email details:', emailDetails);
-            // Process the email details here (e.g., send to WhatsApp)
-        });
-    }
+        gmailController.latestMessage()
 
-    res.status(200).send({status: 'success'});
+    }
 });
 
 route.get('/oauth2callback', async (req, res) => {
