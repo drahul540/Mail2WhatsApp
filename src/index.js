@@ -1,4 +1,4 @@
-// require("./db/connection");
+require("./db/connection");
 const express = require('express');
 const cors = require("cors");
 const responseTime = require('response-time')
