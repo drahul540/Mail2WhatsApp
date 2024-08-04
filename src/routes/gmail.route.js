@@ -11,7 +11,7 @@ route.post('/webhook', (req, res) => {
         const messageData = JSON.parse(message);
         const historyId = messageData.historyId;
 
-        console.log('historyId: ',historyId)
+        console.log('Received notification: ',historyId)
 
         gmailController.latestMessage()
 
@@ -35,7 +35,7 @@ route.get('/email/content', async (req, res) => {
     getEmailDetailsWOCallback(id, (emailDetails) => {
         // const dataBuffer = Buffer.from(emailDetails, 'base64');
         // const decodedData = JSON.parse(dataBuffer.toString('utf8'));
-        console.log('Email details:', emailDetails);
+        // console.log('Email details:', emailDetails);
         res.send(emailDetails);
         // Process the email details here (e.g., send to WhatsApp)
     });

@@ -54,7 +54,6 @@ function getLatestMessage(callback){
                 // delete emailData.headers;
                 // delete emailData.attachments;
                 const modifiedData = removeExtraKey(requiredKeys, emailData);
-                console.log('Modified: ',modifiedData)
                 callback({metadata: modifiedData, messageId: data.messages[0].id});
             });
         });
@@ -64,7 +63,6 @@ function getLatestMessage(callback){
 function removeExtraKey(requiredKeys, data){
     let modifiedData = {};
     for (const [key, value] of Object.entries(data)) {
-        console.log('Key: ',key)
         if(requiredKeys.includes(key)){
             modifiedData[key] = value
         }
@@ -77,7 +75,7 @@ function getMessageList(callback){
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
     gmail.users.messages.list({userId: 'me', labelIds:['INBOX'], maxResults: 1}, (err, res)=>{
         if (err) return console.error('Error getting message list:', err);
-            console.log('RESData: ',res.data)
+            // console.log('RESData: ',res.data)
             callback(res.data);
     })
 }
