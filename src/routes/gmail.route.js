@@ -18,6 +18,8 @@ route.post('/webhook', (req, res) => {
 
         gmailController.latestMessage(historyId)
 
+        res.send({status: 'success'})
+
     }
 });
 
