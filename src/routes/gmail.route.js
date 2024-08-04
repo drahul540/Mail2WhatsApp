@@ -2,7 +2,7 @@ const route = require('express').Router();
 const {getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
 const { setCredentials } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
-const { start, stop } = require('../utils/gmail/watch');
+const { start, stop, watchGmail } = require('../utils/gmail/watch');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
@@ -19,15 +19,27 @@ route.post('/webhook', (req, res) => {
     }
 });
 
-route.get('/webhook/start', async (req, res) => {
-    start();
-    res.send('Watch request started.');
+route.get('/start-watch', async (req, res) => {
+    authorize((auth) => {
+        watchGmail(auth)
+    },(err, response) => {
+        if (err) return res.status(500).send(err);
+        res.send('Watch started');
+    })
 });
 
-route.get('/webhook/stop', async (req, res) => {
-    stop();
-    res.send('Watch request stopped.');
-});
+app.get('/stop-watch', (req, res) => {
+    authorize((auth) => {
+      const gmail = google.gmail({ version: 'v1', auth });
+      
+      gmail.users.stop({
+        userId: 'me',
+      }, (err, response) => {
+        if (err) return res.status(500).send(err);
+        res.send('Watch stopped');
+      });
+    });
+  });
 
 route.get('/oauth2callback', async (req, res) => {
     const { code } = req.query;
