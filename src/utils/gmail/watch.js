@@ -24,7 +24,7 @@ function start(){
 }
 
 function stop(){
-    const gmail = google.gmail({version: 'v1', auth: auth});
+    const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
     const userId = 'me';
 
     gmail.users.stop({userId});
