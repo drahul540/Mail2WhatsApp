@@ -1,5 +1,5 @@
 const {google} = require('googleapis');
-const {oAuth2Client} = require('./auth');
+const {oAuth2Client, authorize} = require('./auth');
 const {TOPIC_NAME} = require('../../config/config');
 
 function watchGmail(auth) {
@@ -20,14 +20,20 @@ function watchGmail(auth) {
 }
 
 function start(){
-    watchGmail(oAuth2Client);
+    authorize((auth)=>{
+        watchGmail(auth);
+    })
+    
 }
 
 function stop(){
-    const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
-    const userId = 'me';
+    authorize((auth)=>{
+        const gmail = google.gmail({version: 'v1', auth: auth});
+        const userId = 'me';
 
-    gmail.users.stop({userId});
+        gmail.users.stop({userId});
+    })
+    
 }
 
 module.exports = { watchGmail, start, stop };
