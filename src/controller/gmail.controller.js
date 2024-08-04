@@ -5,8 +5,8 @@ const EmailUtils = require('../utils/gmail/email')
 class GmailController{
     constructor(){}
 
-    latestMessage(){
-        EmailUtils.getLatestMessage((resData)=>{
+    latestMessage(historyId){
+        EmailUtils.getLatestMessage(historyId,(resData)=>{
             EmailsSchema.create({
                 messageId: resData.messageId,
                 metadata: resData.metadata,

@@ -15,7 +15,7 @@ route.post('/webhook', (req, res) => {
 
         console.log('Received notification: ',historyId)
 
-        gmailController.latestMessage()
+        gmailController.latestMessage(historyId)
 
     }
 });

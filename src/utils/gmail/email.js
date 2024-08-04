@@ -36,9 +36,14 @@ const { simpleParser } = require('mailparser');
     
 // }
 
-function getLatestMessage(callback){
+function getLatestMessage(historyId,callback){
     const requiredKeys = [ 'html', 'text', 'textAsHtml', 'subject', 'date', 'to', 'from'];
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
+    gmail.users.history.list({userId: 'me', startHistoryId: historyId},(err, resp)=>{
+        console.log('RESData: ',resp.data)
+        
+    })
+
     // getMessageList((data)=>{
     //     gmail.users.messages.get({
     //         userId: 'me',
