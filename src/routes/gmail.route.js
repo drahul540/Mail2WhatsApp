@@ -4,6 +4,7 @@ const { setCredentials, authorize } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
 const { start, stop, watchGmail } = require('../utils/gmail/watch');
 const { google } = require('googleapis');
+const cron = require('node-cron');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
@@ -23,6 +24,11 @@ route.post('/webhook', (req, res) => {
 route.get('/start-watch', async (req, res) => {
     authorize((auth) => {
         watchGmail(auth)
+         // Schedule the watch renewal every 6 days
+         cron.schedule('0 0 */6 * *', () => {
+            console.log('Renewing Gmail watch...');
+            authorize(watchGmail);
+        });
     },(err, response) => {
         if (err) return res.status(500).send(err);
         res.send('Watch started');

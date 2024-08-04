@@ -39,10 +39,6 @@ app.listen(PORT, () => {
         //     watchGmail(auth);
         // }
         
-        // Schedule the watch renewal every 6 days
-        cron.schedule('0 0 */6 * *', () => {
-            console.log('Renewing Gmail watch...');
-            authorize(watchGmail);
-        });
+       
     });
 });
