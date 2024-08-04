@@ -37,6 +37,7 @@ const { simpleParser } = require('mailparser');
 // }
 
 function getLatestMessage(callback){
+    const requiredKeys = [ 'html', 'text', 'textAsHtml', 'subject', 'date', 'to', 'from'];
     const gmail = google.gmail({version: 'v1', auth: oAuth2Client});
     getMessageList((data)=>{
         gmail.users.messages.get({
@@ -49,13 +50,24 @@ function getLatestMessage(callback){
                 if (error) {
                     return callback(error);
                 }
-                delete emailData.headerLines;
-                delete emailData.headers;
-                delete emailData.attachments;
-                callback({metadata: emailData, messageId: data.messages[0].id});
+                // delete emailData.headerLines;
+                // delete emailData.headers;
+                // delete emailData.attachments;
+                const modifiedData = removeExtraKey(requiredKeys, emailData)
+                callback({metadata: modifiedData, messageId: data.messages[0].id});
             });
         });
     })
+}
+
+function removeExtraKey(requiredKeys, data){
+    let modifiedData = {};
+    Object.keys(data).entries((key)=>{
+        if(requiredKeys.includes(key)){
+            modifiedData[key] = data[key]
+        }
+    })
+    return modifiedData;
 }
 
 function getMessageList(callback){

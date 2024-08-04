@@ -8,8 +8,29 @@ const emailsSchema = new mongoose.Schema(
       require: true
     },
     metadata: {
-      type: String,
-      require: true,
+      type: [{
+        html: String,
+        text: String,
+        textAsHtml: String,
+        subject: String,
+        date: Date,
+        to: {
+          value: {
+            address: String,
+            name: String
+          },
+          html: String,
+          text: String
+        },
+        from: {
+          value: {
+            address: String,
+            name: String
+          },
+          html: String,
+          text: String
+        }
+      }]
     },
     from: {
       type: String,
