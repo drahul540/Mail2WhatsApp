@@ -18,6 +18,16 @@ route.post('/webhook', (req, res) => {
     }
 });
 
+route.get('/webhook/start', async (req, res) => {
+   
+    res.send('Watch request started.');
+});
+
+route.get('/webhook/stop', async (req, res) => {
+   
+    res.send('Watch request stopped.');
+});
+
 route.get('/oauth2callback', async (req, res) => {
     const { code } = req.query;
     setCredentials(code);

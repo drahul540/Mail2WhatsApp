@@ -19,4 +19,15 @@ function watchGmail(auth) {
     });
 }
 
+function start(){
+    watchGmail(oAuth2Client);
+}
+
+function stop(){
+    const gmail = google.gmail({version: 'v1', auth: auth});
+    const userId = 'me';
+
+    gmail.users.stop({userId});
+}
+
 module.exports = { watchGmail };
