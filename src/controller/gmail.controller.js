@@ -10,7 +10,7 @@ class GmailController{
             EmailsSchema.create({
                 messageId: resData.messageId,
                 metadata: resData.metadata,
-                from: resData.metadata?.from?.value?.address,
+                from: resData.metadata?.from?.value[0].address,
                 subject: resData.metadata?.subject
             }).then((inserted)=>{
                 console.log('Inserted Message...')

@@ -15,18 +15,18 @@ const emailsSchema = new mongoose.Schema(
         subject: String,
         date: Date,
         to: {
-          value: {
+          value: [{
             address: String,
             name: String
-          },
+          }],
           html: String,
           text: String
         },
         from: {
-          value: {
+          value: [{
             address: String,
             name: String
-          },
+          }],
           html: String,
           text: String
         }
