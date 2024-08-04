@@ -53,7 +53,8 @@ function getLatestMessage(callback){
                 // delete emailData.headerLines;
                 // delete emailData.headers;
                 // delete emailData.attachments;
-                const modifiedData = removeExtraKey(requiredKeys, emailData)
+                const modifiedData = removeExtraKey(requiredKeys, emailData);
+                console.log('Modified: ',modifiedData)
                 callback({metadata: modifiedData, messageId: data.messages[0].id});
             });
         });
