@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const {getEmailDetails, getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
+const {getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
 const { setCredentials } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
 

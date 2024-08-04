@@ -111,4 +111,4 @@ function getEmailDetailsWOCallback(messageId, callback) {
     
 }
 
-module.exports = { getLatestMessage, getEmailDetails, getEmailDetailsWOCallback, getMessageList };
+module.exports = { getLatestMessage, getEmailDetailsWOCallback, getMessageList };
