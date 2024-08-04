@@ -8,7 +8,8 @@ function watchGmail(auth) {
     const request = {
         userId: userId,
         requestBody: {
-            labelIds: ['INBOX'],
+            labelIds: ['UNREAD'],
+            labelFilterBehavior: 'include',
             topicName: TOPIC_NAME
         }
     };

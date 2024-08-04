@@ -37,6 +37,7 @@ route.get('/start-watch', async (req, res) => {
 
 route.get('/stop-watch', (req, res) => {
     authorize(stopWatch);
+    res.send('Watch Stopped');
 });
 
 route.get('/oauth2callback', async (req, res) => {
