@@ -30,4 +30,4 @@ function stop(){
     gmail.users.stop({userId});
 }
 
-module.exports = { watchGmail };
+module.exports = { watchGmail, start, stop };

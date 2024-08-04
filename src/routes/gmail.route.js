@@ -2,6 +2,7 @@ const route = require('express').Router();
 const {getEmailDetailsWOCallback, getMessageList} = require('../utils/gmail/email');
 const { setCredentials } = require('../utils/gmail/auth');
 const gmailController = require('../controller/gmail.controller');
+const { start, stop } = require('../utils/gmail/watch');
 
 route.post('/webhook', (req, res) => {
     const data = req.body;
@@ -19,12 +20,12 @@ route.post('/webhook', (req, res) => {
 });
 
 route.get('/webhook/start', async (req, res) => {
-   
+    start();
     res.send('Watch request started.');
 });
 
 route.get('/webhook/stop', async (req, res) => {
-   
+    stop();
     res.send('Watch request stopped.');
 });
 
