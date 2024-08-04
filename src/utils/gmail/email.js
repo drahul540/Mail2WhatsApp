@@ -64,7 +64,9 @@ function getLatestMessage(callback){
 function removeExtraKey(requiredKeys, data){
     let modifiedData = {};
     Object.keys(data).entries((key)=>{
+        console.log('Key: ', key)
         if(requiredKeys.includes(key)){
+            
             modifiedData[key] = data[key]
         }
     })
