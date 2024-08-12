@@ -24,14 +24,21 @@ route.post('/webhook', (req, res) => {
 });
 
 route.get('/start-watch', async (req, res) => {
-    authorize((auth) => {
-        watchGmail(auth)
+    authorize((res) => {
+        console.log('In Function:', res)
+        if(!res.success){
+            res.send(res.auth);
+        }else{
+            watchGmail(res)
+        }
+        
          // Schedule the watch renewal every 6 days
          cron.schedule('0 0 */6 * *', () => {
             console.log('Renewing Gmail watch...');
             authorize(watchGmail);
         });
     },(err, response) => {
+        console.log(response)
         if (err) return res.status(500).send(err);
         res.send('Watch started');
     })

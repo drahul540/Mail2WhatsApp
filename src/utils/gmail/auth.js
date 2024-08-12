@@ -26,7 +26,7 @@ function getNewToken(oAuth2Client, callback) {
     });
     console.log('Authorize this app by visiting this url:', authUrl);
 
-    callback(false)
+    callback({success: false, auth: authUrl})
     // const rl = readline.createInterface({
     //     input: process.stdin,
     //     output: process.stdout,
