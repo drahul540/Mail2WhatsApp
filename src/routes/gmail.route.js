@@ -25,10 +25,12 @@ route.post('/webhook', (req, res) => {
 
 route.get('/start-watch', async (req, res) => {
     authorize((resData) => {
-        console.log('In Function:', resData)
-        if(!resData.success){
+        
+        if(resData.success){
+            console.log('In Function:', resData)
             res.send(resData.auth);
         }else{
+            console.log('In Watch:', resData)
             watchGmail(resData)
         }
         
