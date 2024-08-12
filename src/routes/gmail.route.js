@@ -24,12 +24,12 @@ route.post('/webhook', (req, res) => {
 });
 
 route.get('/start-watch', async (req, res) => {
-    authorize((res) => {
-        console.log('In Function:', res)
-        if(!res.success){
-            res.send(res.auth);
+    authorize((resData) => {
+        console.log('In Function:', resData)
+        if(!resData.success){
+            res.send(resData.auth);
         }else{
-            watchGmail(res)
+            watchGmail(resData)
         }
         
          // Schedule the watch renewal every 6 days
