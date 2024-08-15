@@ -7,7 +7,7 @@ class GmailController{
 
     latestMessage(historyId){
         EmailUtils.getLatestMessage(historyId,(resData)=>{
-            if(resData.metadata?.subject?.includes("[Smith] Call summary from") || resData.metadata?.subject?.includes("You have received a new project request:")){
+            if(resData.metadata?.subject?.includes("[Smith] Call summary from") || resData.metadata?.subject?.includes("[Smith] Urgent Call summary from") || resData.metadata?.subject?.includes("You have received a new project request:")){
                 EmailsSchema.create({
                     messageId: resData.messageId,
                     metadata: resData.metadata,
